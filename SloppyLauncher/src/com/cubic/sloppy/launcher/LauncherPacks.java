@@ -43,7 +43,7 @@ public class LauncherPacks extends IScreen {
     
     public LauncherPacks(final Pane root, final GameEngine engine, final LauncherPanel pane) {
 
-        this.drawAnimatedBackground(engine, root, "bg.mp4");
+        this.drawBackgroundImage(engine, root, "setbg.jpg");
 
         /* ===================== RECTANGLE NOIR EN HAUT ===================== */
         LauncherRectangle topRectangle = new LauncherRectangle(root, 0, 0, 1500, 15);
@@ -65,7 +65,6 @@ public class LauncherPacks extends IScreen {
         resourcePacksList.setStyle("-fx-background-color: rgba(0, 0, 0, 0); -fx-control-inner-background: rgba(0, 0, 0, 0);");
         root.getChildren().add(resourcePacksList);
         // Configure the ListView to display ResourcePackItems
-        resourcePacksDir = new File("./resourcepacks");
         configureResourcePacksList();
         /* ===================== BOUTON AJOUTER ===================== */
         addButton = new JFXButton("Add a Pack");
@@ -75,8 +74,9 @@ public class LauncherPacks extends IScreen {
         addButton.setFont(FontLoader.loadFont("Comfortaa-Regular.ttf", "Comfortaa", 16F));
         addButton.setOnAction(event -> addResourcePack());
         root.getChildren().add(addButton);
-
+        
         resourcePacksDir = new File(System.getenv("APPDATA") + "/.sloppy/bin/game/resourcepacks");
+        this.resourcePacksDir.mkdirs();
         loadResourcePacks();
         
         /** ===================== BOUTON QUITTER ===================== */

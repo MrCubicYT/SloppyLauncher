@@ -58,6 +58,7 @@ public class LauncherPanel extends IScreen {
 	private LauncherRectangle connectionRectangle;
 	private LauncherRectangle autoLoginRectangle;
 	private LauncherRectangle updateRectangle;
+	private LauncherRectangle windowRectangle;
 	
 	private LauncherLabel crackTitle;
 	private LauncherLabel autoLoginLabel;
@@ -91,7 +92,7 @@ public class LauncherPanel extends IScreen {
 	public LauncherPanel(Pane root, GameEngine engine) { 
 		
 	    this.engine = engine; //sets variable to engine given to this method
-	    this.drawAnimatedBackground(engine, root, "bg.mp4"); //draw animated background
+	    this.drawBackgroundImage(engine, root, "bg.png"); //draw animated background
 	    Platform.runLater(root::requestFocus); //deselect default text field
 	    
 	    this.config = new LauncherConfig(engine); //create laucher config file?
@@ -118,17 +119,28 @@ public class LauncherPanel extends IScreen {
     private void setupBackGround(Pane root) {
         LauncherRectangle topRectangle = new LauncherRectangle(root, 0, 0, 70, engine.getHeight()); //launcher side black bar
         topRectangle.setFill(Color.rgb(0, 0, 0, 0.70)); //fill colour
+        //LauncherRectangle topRectangleDetail = new LauncherRectangle(root, 9, 259, 52, 260); //launcher side black bar
+        //topRectangleDetail.setFill(Color.rgb(255, 255, 255, 0.20)); //fill colour
+        //topRectangleDetail.setArcHeight(20.0);
+        //topRectangleDetail.setArcWidth(20.0);
         
         this.drawImage(engine, getResourceLocation().loadImage(engine, "sloppysmp.png"), //main img
         engine.getWidth() / 2 - 270, 20, 580, 150, root, Mover.DONT_MOVE); //main img location
 
         root.getScene().getStylesheets().add("css/design.css"); //some css design
-
+        
+        this.windowRectangle = new LauncherRectangle(root, 980, -5,
+                75, 35);
+        this.windowRectangle.setArcWidth(10.0);
+        this.windowRectangle.setArcHeight(10.0);
+        this.windowRectangle.setFill(Color.rgb(0, 0, 0, 0.30));
+        this.windowRectangle.setVisible(true);
+        
         //main img and style
         this.titleImage = new LauncherImage(root);
         this.titleImage.setImage(getResourceLocation().loadImage(engine, "poop.png"));
         this.titleImage.setSize(50, 50);
-        this.titleImage.setBounds(10, 5, 50, 50);
+        this.titleImage.setBounds(10, 8, 50, 50);
 
         //close button style
         LauncherButton closeButton = new LauncherButton(root);
@@ -144,6 +156,8 @@ public class LauncherPanel extends IScreen {
             animation.setOnFinished(actionEvent -> System.exit(0));
             animation.play();
         });
+        
+
 
         //reduce button style
         LauncherButton reduceButton = new LauncherButton(root);
@@ -176,7 +190,6 @@ public class LauncherPanel extends IScreen {
   	  boolean usePremium = (boolean) config.getValue(EnumConfig.USE_PREMIUM);
   	  String password = (String) config.getValue(EnumConfig.PASSWORD);
   	  String username = (String) config.getValue(EnumConfig.USERNAME);
-  	  String version = (String) config.getValue(EnumConfig.VERSION);
   	  String email = usernameField.getText();
 
   	  //mediaPlayer.setMute(!useMusic);
@@ -218,7 +231,7 @@ public class LauncherPanel extends IScreen {
   	    connectAccountCrackCO(root);
   	  }
 
-  	  GameLinks links = new GameLinks("https://majestycraft.com/minecraft" + urlModifier(version), version + ".json");
+  	  GameLinks links = new GameLinks("http://143.47.253.158/forge/", "1.20.1.json");
   	  engine.reg(links);
   	  Utils.regGameStyle(engine, config);
   	}
@@ -227,9 +240,9 @@ public class LauncherPanel extends IScreen {
         this.microsoftButton = new LauncherButton(root);
         this.microsoftButton.setStyle("-fx-background-color: rgba(0 ,0 ,0 , 0); -fx-text-fill: orange");
         LauncherImage microsoftImg = new LauncherImage(root, getResourceLocation().loadImage(engine, "microsoft.png"));
-        microsoftImg.setSize(27, 27);
+        microsoftImg.setSize(40, 40);
         this.microsoftButton.setGraphic(microsoftImg);
-        this.microsoftButton.setPosition(engine.getWidth() / 2 - 522, engine.getHeight() / 2 - 100);
+        this.microsoftButton.setPosition(engine.getWidth() / 2 - 520, engine.getHeight() / 2 - 110);
         this.microsoftButton.setSize(60, 46);
         microsoftButton.setOnAction(event -> {
         	  if (!App.netIsAvailable()) {
@@ -251,9 +264,9 @@ public class LauncherPanel extends IScreen {
         this.settingsButton = new LauncherButton(root);
         this.settingsButton.setStyle("-fx-background-color: rgba(0 ,0 ,0 , 0); -fx-text-fill: orange");
         LauncherImage settingsImg = new LauncherImage(root, getResourceLocation().loadImage(engine, "settings.png"));
-        settingsImg.setSize(27, 27);
+        settingsImg.setSize(40, 40);
         this.settingsButton.setGraphic(settingsImg);
-        this.settingsButton.setPosition(engine.getWidth() / 2 - 522, engine.getHeight() / 2);
+        this.settingsButton.setPosition(engine.getWidth() / 2 - 520, engine.getHeight() / 2 - 10);
         this.settingsButton.setSize(60, 46);
         this.settingsButton.setOnAction(event -> {
             Scene scene = new Scene(createSettingsPanel(root));
@@ -266,21 +279,14 @@ public class LauncherPanel extends IScreen {
             stage.setHeight(600);
             stage.setScene(scene);
             stage.showAndWait();
-        });
-
-        JFXRippler rippler4 = new JFXRippler(this.settingsButton);
-        rippler4.setLayoutX((float) engine.getWidth() / 2 - 515);
-        rippler4.setLayoutY((float) engine.getHeight() / 2);
-        rippler4.getStyleClass().add("rippler2");
-        root.getChildren().add(rippler4);
-        
+        });      
         
         this.packsButton = new LauncherButton(root);
-        this.packsButton.setStyle("-fx-background-color: rgba(0 ,0 ,0 , 0); -fx-text-fill: orange");
+        this.packsButton.setStyle("-fx-background-color: rgba(0 ,0 ,0 , 0); -fx-text-fill: white");
         settingsImg = new LauncherImage(root, getResourceLocation().loadImage(engine, "pack.png"));
-        settingsImg.setSize(27, 27);
+        settingsImg.setSize(40, 40);
         this.packsButton.setGraphic(settingsImg);
-        this.packsButton.setPosition(engine.getWidth() / 2 - 522, engine.getHeight() / 2+100);
+        this.packsButton.setPosition(engine.getWidth() / 2 - 520, engine.getHeight() / 2 + 90);
         this.packsButton.setSize(60, 46);
         this.packsButton.setOnAction(event -> {
             Scene scene = new Scene(createPacksPanel(root));
@@ -288,18 +294,12 @@ public class LauncherPanel extends IScreen {
             scene.setFill(Color.TRANSPARENT);
             stage.setResizable(false);
             stage.initStyle(StageStyle.TRANSPARENT);
-            stage.setTitle("Parametres Launcher");
+            stage.setTitle("Resource Packs");
             stage.setWidth(900);
             stage.setHeight(600);
             stage.setScene(scene);
             stage.showAndWait();
         });
-
-        JFXRippler rippler5 = new JFXRippler(this.packsButton);
-        rippler5.setLayoutX((float) engine.getWidth() / 2 - 515);
-        rippler5.setLayoutY((float) engine.getHeight() / 2 + 50 );
-        rippler5.getStyleClass().add("rippler2");
-        root.getChildren().add(rippler5);
     }
     
     private void setupConnectionsGUI(Pane root) {
@@ -559,15 +559,16 @@ public class LauncherPanel extends IScreen {
     }
     
     public void update() {
-        new ZoomOutDown(this.microsoftButton).setResetOnFinished(false).play();
-        new ZoomOutDown(this.settingsButton).setResetOnFinished(false).play();
-        new ZoomOutDown(this.crackTitle).setResetOnFinished(false).play();
-        new ZoomOutDown(this.usernameField).setResetOnFinished(false).play();
-        new ZoomOutDown(this.passwordField).setResetOnFinished(false).play();
-        new ZoomOutDown(this.avatar).setResetOnFinished(false).play();
-        new ZoomOutDown(this.rememberMe).setResetOnFinished(false).play();
-        new ZoomOutDown(this.loginButton).setResetOnFinished(false).play();
-        new ZoomOutDown(this.connectionRectangle).setResetOnFinished(false).play();
+        new FadeOut(this.microsoftButton).setResetOnFinished(false).play();
+        new FadeOut(this.packsButton).setResetOnFinished(false).play();
+        new FadeOut(this.settingsButton).setResetOnFinished(false).play();
+        new FadeOut(this.crackTitle).setResetOnFinished(false).play();
+        new FadeOut(this.usernameField).setResetOnFinished(false).play();
+        new FadeOut(this.passwordField).setResetOnFinished(false).play();
+        new FadeOut(this.avatar).setResetOnFinished(false).play();
+        new FadeOut(this.rememberMe).setResetOnFinished(false).play();
+        new FadeOut(this.loginButton).setResetOnFinished(false).play();
+        new FadeOut(this.connectionRectangle).setResetOnFinished(false).play();
 
         this.usernameField.setDisable(true);
         this.connectionRectangle.setDisable(true);
@@ -575,6 +576,8 @@ public class LauncherPanel extends IScreen {
         this.passwordField.setDisable(true);
         this.loginButton.setDisable(true);
         this.settingsButton.setDisable(true);
+        this.microsoftButton.setDisable(true);
+        this.packsButton.setDisable(true);
 
         this.updateRectangle.setVisible(true);
         this.updateLabel.setVisible(true);
@@ -718,16 +721,6 @@ public class LauncherPanel extends IScreen {
         LauncherPane contentPane = new LauncherPane(engine);
         auth.connectMicrosoft(engine, contentPane);
         return contentPane;
-    }
-    
-    private String urlModifier(String version) {
-        if ((boolean)(config.getValue(EnumConfig.USE_FORGE))) {
-            return "/" + version + "/forge/";
-        } else if ((boolean)(config.getValue(EnumConfig.USE_OPTIFINE))) {
-            return "/" + version + "/";
-        } else {
-            return "/";
-        }
     }
     
     public LauncherConfig getConfig() {

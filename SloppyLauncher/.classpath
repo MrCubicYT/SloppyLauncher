@@ -18,7 +18,6 @@
 	<classpathentry kind="lib" path="lib/javafx-mx.jar"/>
 	<classpathentry kind="lib" path="lib/jfxrt.jar"/>
 	<classpathentry kind="lib" path="lib/jfxswt.jar"/>
-	<classpathentry kind="lib" path="lib/json_simple.jar"/>
 	<classpathentry kind="lib" path="lib/json-20210307.jar"/>
 	<classpathentry kind="lib" path="lib/json-simple-1.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/junit-4.13.2.jar"/>
@@ -28,7 +27,6 @@
 	<classpathentry kind="lib" path="lib/AnimateFX-1.2.3.jar"/>
 	<classpathentry kind="lib" path="lib/jfoenix-8.0.10.jar"/>
 	<classpathentry kind="lib" path="lib/reactive-streams-1.0.4.jar"/>
-	<classpathentry kind="lib" path="lib/rxjava-2.2.21.jar"/>
 	<classpathentry kind="lib" path="lib/rxjava-3.1.5.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-api-1.7.36.jar"/>
 	<classpathentry kind="output" path="bin"/>

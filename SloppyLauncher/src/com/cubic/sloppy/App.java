@@ -45,11 +45,11 @@ public class App extends AlternativeBase {
     }
 
     private GameLinks createGameLinks() {
-        return new GameLinks("http://143.47.253.158/forge/", "1.20.1.json");
+        return new GameLinks("http://143.47.253.158/1.20.1/forge/", "1.20.1.json");
     }
 
     private GameEngine createGameEngine() {
-        return new GameEngine(gameFolder, gameLinks, launcherPreferences, GameStyle.VANILLA_1_19_HIGHER);
+        return new GameEngine(gameFolder, gameLinks, launcherPreferences, GameStyle.FORGE_1_19_HIGHER);
     }
 
     private void createContent() throws IOException {

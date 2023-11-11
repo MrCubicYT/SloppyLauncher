@@ -97,7 +97,6 @@ public class LauncherPanel extends IScreen {
 	    
 	    this.config = new LauncherConfig(engine); //create laucher config file?
 	    this.config.loadConfiguration(); //load laucher config file?
-	    
 	    setupBackGround(root);
 	    setupButtons(root);
 	    setupConnectionsGUI(root);
@@ -231,7 +230,7 @@ public class LauncherPanel extends IScreen {
   	    connectAccountCrackCO(root);
   	  }
 
-  	  GameLinks links = new GameLinks("http://143.47.253.158/forge/", "1.20.1.json");
+  	  GameLinks links = new GameLinks("http://143.47.253.158/1.20.1/forge/", "1.20.1.json");
   	  engine.reg(links);
   	  Utils.regGameStyle(engine, config);
   	}
@@ -559,6 +558,7 @@ public class LauncherPanel extends IScreen {
     }
     
     public void update() {
+    	
         new FadeOut(this.microsoftButton).setResetOnFinished(false).play();
         new FadeOut(this.packsButton).setResetOnFinished(false).play();
         new FadeOut(this.settingsButton).setResetOnFinished(false).play();
@@ -595,9 +595,11 @@ public class LauncherPanel extends IScreen {
         new ZoomInDown(updateAvatar).play();
         updateAvatar.setVisible(true);
         engine.getGameLinks().JSON_URL = engine.getGameLinks().BASE_URL
-                + this.config.getValue(EnumConfig.VERSION) + ".json";
+        		+ this.config.getValue(EnumConfig.VERSION) + ".json";
         this.gameUpdater.reg(engine);
         this.gameUpdater.reg(auth.getSession());
+        
+        
 
         /*
          * Change settings in GameEngine from launcher_config.json
